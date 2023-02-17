@@ -1,19 +1,13 @@
 import React from 'react';
-import Profile from './component/profile';
-
-
+import HomePage from './components/HomePage/HomePage.js';
+/* import CreateDogForm from './components/Create/Create.js'; */
+import Profile from './components/Profile/Profile.js';
 const App = () => {
-  const dogProfile = {
-    name: 'Betton',
-    nick: 'Buddy',
-    age: 3,
-    description: 'A friendly golden retriever who loves to play fetch',
-    friends: ['Fido', 'Rufus', 'Daisy'],
-  };
   return (
     <div>
       <h1>Hunddagis Adminverktyg</h1>
-      <Profile profile={dogProfile} />
+      <HomePage />
+      {/*       <CreateDogForm /> */}
     </div>
   );
 };
