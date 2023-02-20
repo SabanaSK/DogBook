@@ -30,23 +30,23 @@ function DogList() {
 
   // Rendera listan över hundar
   return (
-    <Router>
-      <div>
-        <ul>
-          {dogs.map((dog, index) => (
-            <li key={index}>
-              <Link to="Profile.js"  >
-                @{dog.name}
-              </Link>
-              <button onClick={() => removeDog(index)}>x</button>
-            </li>
-          ))}
-        </ul>
-        <Link to="./Create/Create.js" > <button>Skapa ny hund</button> </Link>
+
+    <div>
+      <ul>
+        {dogs.map((dog, index) => (
+          <li key={index}>
+            <Link to="/profile"  >
+              @{dog.name}
+            </Link>
+            <button onClick={() => removeDog(index)}>x</button>
+          </li>
+        ))}
+      </ul>
+      <Link to="/create" > <button>Skapa ny hund</button> </Link>
 
 
-      </div>
-    </Router >
+    </div>
+
   );
 }
 

@@ -11,21 +11,27 @@ const Profile = ({ profile }) => {
     };
     fetchImage();
   }, []);
+
   return (
     <div>
       <img src={imageUrl} alt="DogsPhoto" />
-      <p>Name: {profile.name}</p>
-      <p>Nick: {profile.nick}</p>
-      <p>Age: {profile.age}</p>
-      <p>Bio: {profile.description}</p>
-      <p>Vänner:</p>
-      <ul>
-        {profile.friends.map((friend) => (
-          <li key={friend}>{friend}</li>
-        ))}
-      </ul>
+      {profile && (
+        <>
+          <p>Name: {profile?.name}</p>
+          <p>Nick: {profile?.nick}</p>
+          <p>Age: {profile?.age}</p>
+          <p>Bio: {profile?.description}</p>
+          <p>Vänner:</p>
+          <ul>
+            {profile?.friends?.map((friend) => (
+              <li key={friend}>{friend}</li>
+            ))}
+          </ul>
+        </>
+      )}
     </div>
   );
 };
 
 export default Profile;
+
