@@ -49,6 +49,7 @@ const CreateDogForm = () => {
 
     const data = JSON.parse(localStorage.getItem('dogs')) || [];
     data.push(newDog);
+
     localStorage.setItem('dogs', JSON.stringify(data));
 
 

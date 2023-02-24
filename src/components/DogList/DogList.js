@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Link } from 'react-router-dom';
 function DogList() {
   const [dogs, setDogs] = useState([]);
 
-  // Hämta data från LocalStorage när komponenten har laddats
   useEffect(() => {
     const data = localStorage.getItem('dogs');
     if (data) {
@@ -13,14 +12,14 @@ function DogList() {
   }, []);
 
 
-  // Funktion för att ta bort en hund från listan
+
   const removeDog = (index) => {
-    // Skapa newDogs array med spread operator för att unvika modifiera original data.
+
     const newDogs = [...dogs];
     newDogs.splice(index, 1);
     setDogs(newDogs);
 
-    // Spara data till LocalStorage när en hund tas bort
+
     localStorage.setItem('dogs', JSON.stringify(newDogs));
   }
 
@@ -28,9 +27,8 @@ function DogList() {
     return dog.isInYard ? 'green' : 'red';
   };
 
-  // Rendera listan över hundar
-  return (
 
+  return (
     <div>
       <ul>
         {dogs.map((dog, index) => (
@@ -43,8 +41,6 @@ function DogList() {
         ))}
       </ul>
       <Link to="/create" > <button>Skapa ny hund</button> </Link>
-
-
     </div>
 
   );
