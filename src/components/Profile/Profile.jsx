@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 
 const Profile = () => {
-  const { name } = useParams();
+  const { id } = useParams();
   const [imageUrl, setImageUrl] = useState('');
   const [dogs, setDog] = useState(null);
 
@@ -14,22 +14,28 @@ const Profile = () => {
     };
     fetchImage();
 
-    const data = JSON.parse(localStorage.getItem('dogs')) || [];
-    const foundDog = data.find((dogs) => dogs.name === name);
-    setDog(foundDog);
+    const dogs = JSON.parse(localStorage.getItem('dogs')) || [];
+    console.log('Dogs:', dogs);
+    if (dogs.length > 0) {
+      const dog = dogs.find((d) => d.id === id);
+      console.log('dog:', dog);
+      setDog(dog);
+    }
 
-  }, [name]);
+
+  }, [id]);
 
   return (
     <div>
+      <Link to="/">Tillbaka</Link>
       <img src={imageUrl} alt="DogsPhoto" />
-      <p>Name: {dogs.name}</p>
-      <p>Nick: {dogs.nick}</p>
-      <p>Age: {dogs.age}</p>
-      <p>Bio: {dogs.description}</p>
+      <p>Name: {dogs && dogs.name}</p>
+      <p>Nick: {dogs && dogs.nick}</p>
+      <p>Age: {dogs && dogs.age}</p>
+      <p>Bio: {dogs && dogs.description}</p>
       <p>Vänner:</p>
       <ul>
-        {dogs.friends.map((friend) => (
+        {dogs && dogs.friends.map((friend) => (
           <li key={friend}>{friend}</li>
         ))}
       </ul>

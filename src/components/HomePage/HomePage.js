@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
-import DogList from "../DogList/DogList.js";
+import DogList from "../DogList/DogList.jsx";
+import "./HomePage.css";
 
 const HomePage = () => {
 
 
   return (
-    <div>
-      <h1>Users</h1>
+    <div className="HomePage">
+      <h2>All the dogs</h2>
       <DogList />
     </div>
   );

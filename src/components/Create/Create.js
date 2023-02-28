@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-
+import './Create.css';
+import { v4 as uuidv4 } from 'uuid';
+import { Link } from 'react-router-dom';
 
 const CreateDogForm = () => {
   const [name, setName] = useState('');
@@ -38,6 +40,7 @@ const CreateDogForm = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const newDog = {
+      id: uuidv4(),
       name: name,
       nick: nick,
       age: age,
@@ -62,14 +65,14 @@ const CreateDogForm = () => {
   };
 
   return (
-    <div>
+    <div className='CreateDiv'>
       <h2>Lägg till hund</h2>
+      <Link to='/'>Tillbaka</Link>
       <form onSubmit={handleSubmit}>
         <label>
           Namn:
           <input type="text" value={name} onChange={handleNameChange} required />
         </label>
-
         <label>
           In Yard:
           <input type="checkbox" checked={isInYard} onChange={handleIsInYardChange} />
@@ -82,12 +85,12 @@ const CreateDogForm = () => {
         <br />
         <label>
           Age:
-          <input type="text" value={age} onChange={handleAgeChange} required />
+          <input type="number" value={age} onChange={handleAgeChange} min="0" max="100" required />
         </label>
         <br />
         <label>
           Bio:
-          <input type="text" value={description} onChange={handleDescriptionChange} required />
+          <textarea value={description} onChange={handleDescriptionChange} required />
         </label>
         <br />
         <label>
