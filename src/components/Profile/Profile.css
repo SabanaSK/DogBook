@@ -1,0 +1,57 @@
+img{
+  width: 45vw;
+  height: auto;
+}
+.profileDiv {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 7rem;
+  background-color: white;
+  width: 60%;
+  height: 100%;
+  margin: 0 auto;
+  border-radius: 1rem;
+}
+
+
+.profileDiv img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.profileDiv > h2 {
+  margin-top: 1rem;
+  margin-left: 0;
+  margin-bottom: 1rem;
+}
+
+.profileDiv > ul {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding-left: 0;
+  list-style: none;
+}
+
+.profileDiv > li {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.ProfileDiv p {
+  margin: 0;
+}
+
+
+.ProfileDiv .name p {
+  margin-left: 10px;
+}
+
+.name {
+  width: auto;
+  display: flex;
+}
+.name > a{
+margin-left: 10px;
+}

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
 import './DogList.css';
 
+
 function DogList() {
   const [dogs, setDogs] = useState([]);
 
@@ -17,8 +18,6 @@ function DogList() {
     const newDogs = [...dogs];
     newDogs.splice(index, 1);
     setDogs(newDogs);
-
-
     localStorage.setItem('dogs', JSON.stringify(newDogs));
   }
 
@@ -29,9 +28,11 @@ function DogList() {
 
   return (
     <div className='DogListDiv'>
-      <ul>
+      <ul className='dogListUl'>
         {dogs.map((dog, index) => (
-          <li key={index}>
+          <li
+            key={index}
+            style={{ color: dog.isInYard ? 'green' : 'red' }}>
             <Link to={`/profile/${dog.id}`}>
               {dog.name}
             </Link>
@@ -39,7 +40,7 @@ function DogList() {
           </li>
         ))}
       </ul>
-      <Link to="/create" > <button className='CreateNewDog'>Skapa ny hund</button> </Link>
+      <Link to="/create" > <button className='CreateNewDog'>Create new dog</button> </Link>
     </div>
   );
 }

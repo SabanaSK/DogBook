@@ -1,8 +1,27 @@
-.header{
+.header {
   height: 10vh;
   align-items: center;
   display: flex;
   padding-top: 2rem;
-  justify-content: center;
-  color:  rgb(185, 28, 185);
+  justify-content: space-between;
+  color: rgb(185, 28, 185);
+  margin-bottom: 2rem;
+}
+
+nav {
+  display: flex;
+}
+
+.headerUl {
+  list-style: none;
+  display: flex;
+}
+
+.headerUl> li {
+  margin-right: 1rem;
+  text-decoration: none;
+  color:  rgb(169, 29, 169);  
+  border-radius: 2rem;
+  text-align: center;
+
 }

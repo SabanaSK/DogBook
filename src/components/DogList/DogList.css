@@ -1,17 +1,9 @@
-li{
+.dogListUl>li{
   border: 4px;
-  border-radius: 10px;
-  box-shadow: 10px 10px 5px rgb(234, 206, 206);
+  border-radius: 2rem;
   width: 100%;
   height: 4rem;
-  margin: 1rem;
-  margin-top: 1rem;
-  padding-top: 1rem;
-  background-color: white;
   list-style: none;
-  padding-left: 2rem;
-  padding-right: 2rem;
-  padding-bottom: 2rem;
   font-size: 1.6rem;
 }
 
@@ -21,7 +13,6 @@ li>button{
   width: 5rem;
   height: 1.5rem;
   margin-left: 2rem;
-  color:  rgb(185, 28, 185);
   background-color: white;
   font-size: 1rem;
 }
@@ -33,7 +24,6 @@ li>button:hover{
 }
 a{
   text-decoration: none;
-  color:  rgb(185, 28, 185);
 }
 .CreateNewDog{
   border: 2px solid rgb(248, 135, 205);
@@ -54,3 +44,16 @@ a{
   color: white;
   cursor: pointer;
 } 
+
+.createDogSuccess {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 5px;
+  display: none;
+}
+
+.createDogSuccessShow {
+  display: block;
+}

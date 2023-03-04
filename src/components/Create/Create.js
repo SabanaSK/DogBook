@@ -1,15 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Create.css';
 import { v4 as uuidv4 } from 'uuid';
-import { Link } from 'react-router-dom';
 
 const CreateDogForm = () => {
   const [name, setName] = useState('');
   const [nick, setNick] = useState('');
   const [age, setAge] = useState('');
   const [description, setDescription] = useState('');
-  const [friends, setFriends] = useState('');
+  const [friends, setFriends] = useState([]);
   const [isInYard, setIsInYard] = useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [allFriends, setAllFriends] = useState([]);
+
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem('dogs')) || [];
+    const allFriends = data.map((dog) => dog.name);
+    setAllFriends(allFriends);
+  }, []);
 
   const handleNameChange = (event) => {
     setName(event.target.value);
@@ -27,9 +34,12 @@ const CreateDogForm = () => {
     setDescription(event.target.value);
   };
 
-
   const handleFriendsChange = (event) => {
-    setFriends(event.target.value)
+    const selectedFriends = event.target.value
+      .split(',')
+      .map((friend) => friend.trim())
+      .filter((friend) => allFriends.includes(friend));
+    setFriends(selectedFriends);
   };
 
   const handleIsInYardChange = (event) => {
@@ -45,7 +55,7 @@ const CreateDogForm = () => {
       nick: nick,
       age: age,
       description: description,
-      friends: friends.split(','),
+      friends: friends,
       isInYard: isInYard,
 
     };
@@ -55,22 +65,22 @@ const CreateDogForm = () => {
 
     localStorage.setItem('dogs', JSON.stringify(data));
 
-
+    setShowSuccessMessage(true);
     setName('');
     setNick('');
     setAge('');
     setDescription('');
-    setFriends('');
+    setFriends([]);
     setIsInYard(false);
-  };
 
+  };
   return (
     <div className='CreateDiv'>
-      <h2>Lägg till hund</h2>
-      <Link to='/'>Tillbaka</Link>
+      <h2>Create new dog</h2>
+      {showSuccessMessage && <div className="successMessage">Dog created successfully!</div>}
       <form onSubmit={handleSubmit}>
         <label>
-          Namn:
+          Name:
           <input type="text" value={name} onChange={handleNameChange} required />
         </label>
         <label>
@@ -94,11 +104,18 @@ const CreateDogForm = () => {
         </label>
         <br />
         <label>
-          Vänner:
-          <input type="text" value={friends} onChange={handleFriendsChange} required />
+          Friends:
+          <input type='text' value={friends} onChange={handleFriendsChange} />
+          <ul>
+            {friends.map((friend) => (
+              <li key={friend}>
+                <a href={`/friends/${friend}`}>{friend}</a>
+              </li>
+            ))}
+          </ul>
         </label>
         <br />
-        <button type="submit">Lägg till</button>
+        <button type="submit">Create</button>
       </form>
     </div>
   );

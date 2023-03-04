@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import './Profile.css';
 
 const Profile = () => {
   const { id } = useParams();
@@ -15,25 +16,24 @@ const Profile = () => {
     fetchImage();
 
     const dogs = JSON.parse(localStorage.getItem('dogs')) || [];
-    console.log('Dogs:', dogs);
     if (dogs.length > 0) {
       const dog = dogs.find((d) => d.id === id);
-      console.log('dog:', dog);
       setDog(dog);
     }
-
-
+    console.log('dogs:', dogs);
   }, [id]);
 
   return (
-    <div>
-      <Link to="/">Tillbaka</Link>
+    <div className='profileDiv'>
       <img src={imageUrl} alt="DogsPhoto" />
-      <p>Name: {dogs && dogs.name}</p>
+      <div className='name'>
+        <p>Name: {dogs && dogs.name}</p>
+        <Link to={`/edit/${id}`}> Edit </Link>
+      </div>
       <p>Nick: {dogs && dogs.nick}</p>
       <p>Age: {dogs && dogs.age}</p>
       <p>Bio: {dogs && dogs.description}</p>
-      <p>Vänner:</p>
+      <p>Friends:</p>
       <ul>
         {dogs && dogs.friends.map((friend) => (
           <li key={friend}>{friend}</li>
