@@ -5,7 +5,7 @@ import './Profile.css';
 const Profile = () => {
   const { id } = useParams();
   const [imageUrl, setImageUrl] = useState('');
-  const [dogs, setDog] = useState(null);
+  const [dog, setDog] = useState(null);
 
   useEffect(() => {
     const fetchImage = async () => {
@@ -20,25 +20,25 @@ const Profile = () => {
       const dog = dogs.find((d) => d.id === id);
       setDog(dog);
     }
-    console.log('dogs:', dogs);
   }, [id]);
 
   return (
     <div className='profileDiv'>
       <img src={imageUrl} alt="DogsPhoto" />
       <div className='name'>
-        <p>Name: {dogs && dogs.name}</p>
+        <p>Name: {dog && dog.name}</p>
         <Link to={`/edit/${id}`}> Edit </Link>
       </div>
-      <p>Nick: {dogs && dogs.nick}</p>
-      <p>Age: {dogs && dogs.age}</p>
-      <p>Bio: {dogs && dogs.description}</p>
+      <p>Nick: {dog && dog.nick}</p>
+      <p>Age: {dog && dog.age}</p>
+      <p>Bio: {dog && dog.description}</p>
+      <p>In Yard: {dog && (dog.isInYard ? 'Yes' : 'No')}</p>
       <p>Friends:</p>
-      <ul>
-        {dogs && dogs.friends.map((friend) => (
-          <li key={friend}>{friend}</li>
-        ))}
-      </ul>
+      {dog && dog.friends.map((friend) => (
+        <Link key={friend.id} to={`/profile/${friend.id}`}>
+          {friend.name}
+        </Link>
+      ))}
     </div>
   );
 };

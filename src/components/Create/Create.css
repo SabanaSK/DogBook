@@ -65,3 +65,19 @@ button[type='submit']:hover {
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
+
+.removeButton {
+  border: 2px solid  rgb(248, 135, 205);
+   border-radius: 10px;
+   width: 5rem;
+   height: 1.5rem;
+   margin-left: 2rem;
+   background-color: white;
+   font-size: 1rem;
+ }
+ 
+.removeButton:hover{
+   background-color: rgb(214, 115, 176);
+   color: white;
+   cursor: pointer;
+ }

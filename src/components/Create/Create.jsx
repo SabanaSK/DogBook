@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './Create.css';
+import FriendSelector from "../FriendSelector/FriendSelector.jsx";
 import { v4 as uuidv4 } from 'uuid';
 
 const CreateDogForm = () => {
@@ -7,16 +8,9 @@ const CreateDogForm = () => {
   const [nick, setNick] = useState('');
   const [age, setAge] = useState('');
   const [description, setDescription] = useState('');
-  const [friends, setFriends] = useState([]);
   const [isInYard, setIsInYard] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  const [allFriends, setAllFriends] = useState([]);
-
-  useEffect(() => {
-    const data = JSON.parse(localStorage.getItem('dogs')) || [];
-    const allFriends = data.map((dog) => dog.name);
-    setAllFriends(allFriends);
-  }, []);
+  const [selectedFriends, setSelectedFriends] = useState([]);
 
   const handleNameChange = (event) => {
     setName(event.target.value);
@@ -34,17 +28,18 @@ const CreateDogForm = () => {
     setDescription(event.target.value);
   };
 
-  const handleFriendsChange = (event) => {
-    const selectedFriends = event.target.value
-      .split(',')
-      .map((friend) => friend.trim())
-      .filter((friend) => allFriends.includes(friend));
-    setFriends(selectedFriends);
-  };
-
   const handleIsInYardChange = (event) => {
     setIsInYard(event.target.checked);
   };
+
+  function handleFriendSelect(friends) {
+    setSelectedFriends([...selectedFriends, ...friends]);
+  }
+
+  function handleRemoveFriend(friend) {
+    const newSelectedFriends = selectedFriends.filter((selectedFriend) => selectedFriend.id !== friend.id);
+    setSelectedFriends(newSelectedFriends);
+  }
 
 
   const handleSubmit = (event) => {
@@ -55,7 +50,7 @@ const CreateDogForm = () => {
       nick: nick,
       age: age,
       description: description,
-      friends: friends,
+      friends: selectedFriends,
       isInYard: isInYard,
 
     };
@@ -70,7 +65,7 @@ const CreateDogForm = () => {
     setNick('');
     setAge('');
     setDescription('');
-    setFriends([]);
+    setSelectedFriends([]);
     setIsInYard(false);
 
   };
@@ -80,7 +75,7 @@ const CreateDogForm = () => {
       {showSuccessMessage && <div className="successMessage">Dog created successfully!</div>}
       <form onSubmit={handleSubmit}>
         <label>
-          Name:
+          *Name:
           <input type="text" value={name} onChange={handleNameChange} required />
         </label>
         <label>
@@ -89,31 +84,36 @@ const CreateDogForm = () => {
         </label>
         <br />
         <label>
-          Nick:
+          *Nick:
           <input type="text" value={nick} onChange={handleNickChange} required />
         </label>
         <br />
         <label>
-          Age:
+          *Age:
           <input type="number" value={age} onChange={handleAgeChange} min="0" max="100" required />
         </label>
         <br />
         <label>
           Bio:
-          <textarea value={description} onChange={handleDescriptionChange} required />
+          <textarea value={description} onChange={handleDescriptionChange} />
         </label>
         <br />
-        <label>
-          Friends:
-          <input type='text' value={friends} onChange={handleFriendsChange} />
-          <ul>
-            {friends.map((friend) => (
-              <li key={friend}>
-                <a href={`/friends/${friend}`}>{friend}</a>
-              </li>
-            ))}
-          </ul>
-        </label>
+        {selectedFriends.length > 0 && (
+          <div>
+            <p>Selected friends:</p>
+            <div className="selected-friends">
+              {selectedFriends.map((friend) => (
+                <div key={friend.id}>
+                  {friend.name}
+                  <button className='removeButton' onClick={() => handleRemoveFriend(friend)}>Remove</button>
+                  <br />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+        <br />
+        <FriendSelector onFriendSelect={handleFriendSelect} selectedFriends={selectedFriends} />
         <br />
         <button type="submit">Create</button>
       </form>

@@ -55,3 +55,7 @@ img{
 .name > a{
 margin-left: 10px;
 }
+
+p{
+ margin: 0.5rem 0;
+}

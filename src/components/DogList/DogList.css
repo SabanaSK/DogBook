@@ -1,3 +1,11 @@
+.DogListDiv{
+  background-color: white;
+  width: 70%;
+  height: 100%;
+  margin: 0 auto;
+  border-radius: 1rem;
+  padding: 3rem;
+}
 .dogListUl>li{
   border: 4px;
   border-radius: 2rem;

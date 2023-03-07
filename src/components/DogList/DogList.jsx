@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './DogList.css';
 
 
@@ -22,18 +22,17 @@ function DogList() {
   }
 
   const isInYard = (dog) => {
-    return dog.isInYard ? 'green' : 'red';
+    return {
+      color: dog.isInYard ? 'green' : 'red'
+    };
   };
-
 
   return (
     <div className='DogListDiv'>
       <ul className='dogListUl'>
         {dogs.map((dog, index) => (
-          <li
-            key={index}
-            style={{ color: dog.isInYard ? 'green' : 'red' }}>
-            <Link to={`/profile/${dog.id}`}>
+          <li key={index}>
+            <Link to={`/profile/${dog.id}`} style={isInYard(dog)}>
               {dog.name}
             </Link>
             <button onClick={() => removeDog(index)}> Remove </button>
@@ -43,6 +42,7 @@ function DogList() {
       <Link to="/create" > <button className='CreateNewDog'>Create new dog</button> </Link>
     </div>
   );
+
 }
 
 export default DogList;
