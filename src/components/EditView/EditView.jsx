@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './EditView.css';
 import FriendSelector from '../FriendSelector/FriendSelector.jsx';
 import { useParams } from 'react-router-dom';
+import GoBackButton from '../GoBack.jsx';
 
 const EditDogForm = () => {
     const [name, setName] = useState('');
@@ -84,6 +85,7 @@ const EditDogForm = () => {
 
     return (
         <div className='EditDiv'>
+            <GoBackButton />
             <form onSubmit={handleSubmit}>
                 <h2>Edit {dogData.name}'s profile</h2>
                 {showSuccessMessage && <div className='successMessage'>Dog updated successfully!</div>}
@@ -92,7 +94,7 @@ const EditDogForm = () => {
                     <input type='text' value={name} onChange={handleNameChange} required />
                 </label>
                 <label>
-                    In Yard:
+                    Present:
                     <input type='checkbox' checked={isInYard} onChange={handleIsInYardChange} />
                 </label>
                 <br />
@@ -103,12 +105,12 @@ const EditDogForm = () => {
                 <br />
                 <label>
                     Age:
-                    <input type='number' value={age} onChange={handleAgeChange} min='0' max='100' required />
+                    <input type='number' value={age} onChange={handleAgeChange} min='1' max='100' required />
                 </label>
                 <br />
                 <label>
                     Bio:
-                    <textarea value={description} onChange={handleDescriptionChange} required />
+                    <textarea value={description} onChange={handleDescriptionChange} />
                 </label>
                 <br />
                 {selectedFriends.length > 0 && (

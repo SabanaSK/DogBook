@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import './Profile.css';
+import GoBackButton from '../GoBack.jsx';
 
 const Profile = () => {
   const { id } = useParams();
@@ -23,23 +24,37 @@ const Profile = () => {
   }, [id]);
 
   return (
-    <div className='profileDiv'>
-      <img src={imageUrl} alt="DogsPhoto" />
-      <div className='name'>
-        <p>Name: {dog && dog.name}</p>
-        <Link to={`/edit/${id}`}> Edit </Link>
+    <>
+      <GoBackButton />
+      <div className='profileDiv'>
+        <img src={imageUrl} alt="DogsPhoto" />
+        <div className='name'>
+          <p>Name: {dog && dog.name}</p>
+          <Link to={`/edit/${id}`}> Edit </Link>
+        </div>
+        <p>Nick: {dog && dog.nick}</p>
+        <p>Age: {dog && dog.age}</p>
+        <p>Bio: {dog && dog.description}</p>
+        <div>
+          <label htmlFor="present">Present:</label>
+          <input
+
+            type="checkbox"
+            id="present"
+            name="present"
+            defaultChecked={dog && dog.isInYard}
+            disabled
+          />
+        </div>
+
+        <p>Friends:</p>
+        {dog && dog.friends.map((friend) => (
+          <Link key={friend.id} to={`/profile/${friend.id}`}>
+            {friend.name}
+          </Link>
+        ))}
       </div>
-      <p>Nick: {dog && dog.nick}</p>
-      <p>Age: {dog && dog.age}</p>
-      <p>Bio: {dog && dog.description}</p>
-      <p>In Yard: {dog && (dog.isInYard ? 'Yes' : 'No')}</p>
-      <p>Friends:</p>
-      {dog && dog.friends.map((friend) => (
-        <Link key={friend.id} to={`/profile/${friend.id}`}>
-          {friend.name}
-        </Link>
-      ))}
-    </div>
+    </>
   );
 };
 

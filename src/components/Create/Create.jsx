@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './Create.css';
 import FriendSelector from "../FriendSelector/FriendSelector.jsx";
 import { v4 as uuidv4 } from 'uuid';
+import GoBackButton from '../GoBack';
 
 const CreateDogForm = () => {
   const [name, setName] = useState('');
@@ -70,54 +71,57 @@ const CreateDogForm = () => {
 
   };
   return (
-    <div className='CreateDiv'>
-      <h2>Create new dog</h2>
-      {showSuccessMessage && <div className="successMessage">Dog created successfully!</div>}
-      <form onSubmit={handleSubmit}>
-        <label>
-          *Name:
-          <input type="text" value={name} onChange={handleNameChange} required />
-        </label>
-        <label>
-          In Yard:
-          <input type="checkbox" checked={isInYard} onChange={handleIsInYardChange} />
-        </label>
-        <br />
-        <label>
-          *Nick:
-          <input type="text" value={nick} onChange={handleNickChange} required />
-        </label>
-        <br />
-        <label>
-          *Age:
-          <input type="number" value={age} onChange={handleAgeChange} min="0" max="100" required />
-        </label>
-        <br />
-        <label>
-          Bio:
-          <textarea value={description} onChange={handleDescriptionChange} />
-        </label>
-        <br />
-        {selectedFriends.length > 0 && (
-          <div>
-            <p>Selected friends:</p>
-            <div className="selected-friends">
-              {selectedFriends.map((friend) => (
-                <div key={friend.id}>
-                  {friend.name}
-                  <button className='removeButton' onClick={() => handleRemoveFriend(friend)}>Remove</button>
-                  <br />
-                </div>
-              ))}
+    <>
+      <GoBackButton />
+      <div className='CreateDiv'>
+        <h2>Create new dog</h2>
+        {showSuccessMessage && <div className="successMessage">Dog created successfully!</div>}
+        <form onSubmit={handleSubmit}>
+          <label>
+            *Name:
+            <input type="text" value={name} onChange={handleNameChange} required />
+          </label>
+          <label>
+            Present:
+            <input type="checkbox" checked={isInYard} onChange={handleIsInYardChange} />
+          </label>
+          <br />
+          <label>
+            *Nick:
+            <input type="text" value={nick} onChange={handleNickChange} required />
+          </label>
+          <br />
+          <label>
+            *Age:
+            <input type="number" value={age} onChange={handleAgeChange} min="1" max="100" required />
+          </label>
+          <br />
+          <label>
+            Bio:
+            <textarea value={description} onChange={handleDescriptionChange} />
+          </label>
+          <br />
+          {selectedFriends.length > 0 && (
+            <div>
+              <p>Selected friends:</p>
+              <div className="selected-friends">
+                {selectedFriends.map((friend) => (
+                  <div key={friend.id}>
+                    {friend.name}
+                    <button className='removeButton' onClick={() => handleRemoveFriend(friend)}>Remove</button>
+                    <br />
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        )}
-        <br />
-        <FriendSelector onFriendSelect={handleFriendSelect} selectedFriends={selectedFriends} />
-        <br />
-        <button type="submit">Create</button>
-      </form>
-    </div>
+          )}
+          <br />
+          <FriendSelector onFriendSelect={handleFriendSelect} selectedFriends={selectedFriends} />
+          <br />
+          <button type="submit">Create</button>
+        </form>
+      </div>
+    </>
   );
 };
 
