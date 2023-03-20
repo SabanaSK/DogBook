@@ -6,10 +6,9 @@ function FriendSelector({ onFriendSelect, selectedFriends, currentDogId }) {
     useEffect(() => {
         const dogFriendsData = localStorage.getItem('dogs');
         const parsedDogFriends = JSON.parse(dogFriendsData);
-        if (parsedDogFriends) {
-            const availableDogFriends = parsedDogFriends.filter((friend) => !selectedFriends.some((selectedFriend) => selectedFriend.id === friend.id) && friend.id !== currentDogId);
-            setDogFriends(availableDogFriends);
-        }
+        const availableDogFriends = parsedDogFriends.filter((friend) => !selectedFriends.some((selectedFriend) => selectedFriend.id === friend.id) && friend.id !== currentDogId);
+        setDogFriends(availableDogFriends);
+
     }, [selectedFriends, currentDogId]);
 
 

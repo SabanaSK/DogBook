@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './Create.css';
 import FriendSelector from "../FriendSelector/FriendSelector.jsx";
 import { v4 as uuidv4 } from 'uuid';
-import GoBackButton from '../GoBack';
+import GoBackButton from '../GoBack.jsx';
 
 const CreateDogForm = () => {
   const [name, setName] = useState('');
@@ -51,15 +51,32 @@ const CreateDogForm = () => {
       nick: nick,
       age: age,
       description: description,
-      friends: selectedFriends,
+      friends: selectedFriends.map(friend => friend.id), // only store friend ids in the new dog object
       isInYard: isInYard,
-
     };
 
-    const data = JSON.parse(localStorage.getItem('dogs')) || [];
-    data.push(newDog);
+    const dogs = JSON.parse(localStorage.getItem('dogs')) || [];
+    const friendships = JSON.parse(localStorage.getItem('friendships')) || [];
+    dogs.push(newDog);
 
-    localStorage.setItem('dogs', JSON.stringify(data));
+    selectedFriends.forEach((friend) => {
+      const existingFriendship = friendships.find((friendship) => (
+        (friendship.dog1Id === friend.id && friendship.dog2Id === newDog.id) ||
+        (friendship.dog1Id === newDog.id && friendship.dog2Id === friend.id)
+      ));
+
+      if (!existingFriendship) {
+        const newFriendship = {
+          id: uuidv4(),
+          dog1Id: friend.id,
+          dog2Id: newDog.id,
+        };
+        friendships.push(newFriendship);
+      }
+    });
+
+    localStorage.setItem('dogs', JSON.stringify(dogs));
+    localStorage.setItem('friendships', JSON.stringify(friendships));
 
     setShowSuccessMessage(true);
     setName('');
@@ -68,8 +85,8 @@ const CreateDogForm = () => {
     setDescription('');
     setSelectedFriends([]);
     setIsInYard(false);
-
   };
+
   return (
     <>
       <GoBackButton />
@@ -108,7 +125,7 @@ const CreateDogForm = () => {
                 {selectedFriends.map((friend) => (
                   <div key={friend.id}>
                     {friend.name}
-                    <button className='removeButton' onClick={() => handleRemoveFriend(friend)}>Remove</button>
+                    <button onClick={() => handleRemoveFriend(friend)}>Remove</button>
                     <br />
                   </div>
                 ))}

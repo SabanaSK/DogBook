@@ -3,6 +3,7 @@ import './EditView.css';
 import FriendSelector from '../FriendSelector/FriendSelector.jsx';
 import { useParams } from 'react-router-dom';
 import GoBackButton from '../GoBack.jsx';
+import { v4 as uuidv4 } from "uuid";
 
 const EditDogForm = () => {
     const [name, setName] = useState('');
@@ -26,7 +27,17 @@ const EditDogForm = () => {
             setAge(dog.age);
             setDescription(dog.description);
             setIsInYard(dog.isInYard);
-            setSelectedFriends(dog.friends);
+            const friendships = JSON.parse(localStorage.getItem('friendships')) || [];
+            const friendIds = friendships.reduce((ids, friendship) => {
+                if (friendship.dog1Id === id) {
+                    ids.push(friendship.dog2Id);
+                } else if (friendship.dog2Id === id) {
+                    ids.push(friendship.dog1Id);
+                }
+                return ids;
+            }, []);
+            const friends = data.filter((friend) => friendIds.includes(friend.id) && friend.id !== id);
+            setSelectedFriends(friends);
         }
     }, [id]);
 
@@ -54,8 +65,23 @@ const EditDogForm = () => {
         setSelectedFriends([...selectedFriends, ...friends]);
     }
 
-    function handleRemoveFriend(friend) {
+    function handleRemoveFriend(friend, dogId) {
         const newSelectedFriends = selectedFriends.filter((selectedFriend) => selectedFriend.id !== friend.id);
+        const friendships = JSON.parse(localStorage.getItem('friendships')) || [];
+
+        // Find the index of the friendship to delete
+        const friendshipIndex = friendships.findIndex((friendship) => (
+            (friendship.dog1Id === friend.id && friendship.dog2Id === dogId) ||
+            (friendship.dog1Id === dogId && friendship.dog2Id === friend.id)
+        ));
+
+        if (friendshipIndex !== -1) {
+            // Remove the friendship from the array
+            friendships.splice(friendshipIndex, 1);
+        }
+
+        localStorage.setItem('friendships', JSON.stringify(friendships));
+
         setSelectedFriends(newSelectedFriends);
     }
 
@@ -74,6 +100,25 @@ const EditDogForm = () => {
         const data = JSON.parse(localStorage.getItem('dogs')) || [];
         const updatedData = data.map((dog) => (dog.id === id ? updatedDog : dog));
 
+        const friendships = JSON.parse(localStorage.getItem('friendships')) || [];
+        selectedFriends.forEach((friend) => {
+            const existingFriendship = friendships.find((friendship) => (
+                (friendship.dog1Id === friend.id && friendship.dog2Id === updatedDog.id) ||
+                (friendship.dog1Id === updatedDog.id && friendship.dog2Id === friend.id)
+            ));
+
+            if (!existingFriendship) {
+                // Add new friendship to friendships array
+                const newFriendship = {
+                    id: uuidv4(),
+                    dog1Id: friend.id,
+                    dog2Id: updatedDog.id,
+                };
+                friendships.push(newFriendship);
+            }
+        });
+
+        localStorage.setItem('friendships', JSON.stringify(friendships));
         localStorage.setItem('dogs', JSON.stringify(updatedData));
 
         setShowSuccessMessage(true);
@@ -85,10 +130,10 @@ const EditDogForm = () => {
 
     return (
         <div className='EditDiv'>
+            <h2>Edit {dogData.name}'s profile</h2>
             <GoBackButton />
+            {showSuccessMessage && <div className='successMessage'>Dog updated successfully!</div>}
             <form onSubmit={handleSubmit}>
-                <h2>Edit {dogData.name}'s profile</h2>
-                {showSuccessMessage && <div className='successMessage'>Dog updated successfully!</div>}
                 <label>
                     Name:
                     <input type='text' value={name} onChange={handleNameChange} required />
@@ -120,7 +165,7 @@ const EditDogForm = () => {
                             {selectedFriends.map((friend) => (
                                 <div key={friend.id}>
                                     {friend.name}
-                                    <button className='removeButton' onClick={() => handleRemoveFriend(friend)}>Remove</button>
+                                    <button onClick={() => handleRemoveFriend(friend, id)}>Remove</button>
                                     <br />
                                 </div>
                             ))}

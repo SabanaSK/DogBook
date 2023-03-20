@@ -16,16 +16,24 @@ function DogList() {
   const removeDog = (index) => {
 
     const newDogs = [...dogs];
-    newDogs.splice(index, 1);
+    const removedDog = newDogs.splice(index, 1)[0];
     setDogs(newDogs);
     localStorage.setItem('dogs', JSON.stringify(newDogs));
-  }
+
+    const friendships = JSON.parse(localStorage.getItem('friendships')) || [];
+    const newFriendships = friendships.filter((friendship) => (
+      friendship.dog1Id !== removedDog.id && friendship.dog2Id !== removedDog.id
+    ));
+    localStorage.setItem('friendships', JSON.stringify(newFriendships));
+  };
+
 
   const isInYard = (dog) => {
     return {
       color: dog.isInYard ? 'green' : 'red'
     };
-  };
+  }
+
 
   return (
     <div className='DogListDiv'>

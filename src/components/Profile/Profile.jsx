@@ -7,6 +7,7 @@ const Profile = () => {
   const { id } = useParams();
   const [imageUrl, setImageUrl] = useState('');
   const [dog, setDog] = useState(null);
+  const [friends, setFriends] = useState([]);
 
   useEffect(() => {
     const fetchImage = async () => {
@@ -17,9 +18,19 @@ const Profile = () => {
     fetchImage();
 
     const dogs = JSON.parse(localStorage.getItem('dogs')) || [];
+    const friendships = JSON.parse(localStorage.getItem('friendships')) || [];
     if (dogs.length > 0) {
       const dog = dogs.find((d) => d.id === id);
-      setDog(dog);
+      if (dog) {
+        setDog(dog);
+        const dogFriendships = friendships.filter((friendship) => (
+          friendship.dog1Id === id || friendship.dog2Id === id
+        ));
+        const dogFriends = dogs.filter((d) => (
+          dogFriendships.some((friendship) => friendship.dog1Id === d.id || friendship.dog2Id === d.id)
+        ));
+        setFriends(dogFriends.filter((friend) => friend.id !== id));
+      }
     }
   }, [id]);
 
@@ -46,13 +57,18 @@ const Profile = () => {
             disabled
           />
         </div>
-
-        <p>Friends:</p>
-        {dog && dog.friends.map((friend) => (
-          <Link key={friend.id} to={`/profile/${friend.id}`}>
-            {friend.name}
-          </Link>
-        ))}
+        {friends.length > 0 && (
+          <div>
+            <p>Friends:</p>
+            {friends.map((friend) => (
+              <div key={friend.id}>
+                <Link to={`/profile/${friend.id}`}>
+                  {friend.name}
+                </Link>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </>
   );
